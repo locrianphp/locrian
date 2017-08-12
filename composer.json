@@ -23,12 +23,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Locrian\\Core\\": "src/Locrian/"
+      "Locrian\\": "src/Locrian/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Locrian\\Core\\Tests\\": "tests/"
+      "Locrian\\Tests\\": "tests/"
     }
   },
   "scripts": {
