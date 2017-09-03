@@ -28,48 +28,40 @@
          */
         private $get;
 
-
         /**
          * @var \Locrian\Collections\HashMap list of post routes
          */
         private $post;
-
 
         /**
          * @var \Locrian\Collections\HashMap list of put routes
          */
         private $put;
 
-
         /**
          * @var \Locrian\Collections\HashMap list of delete routes
          */
         private $delete;
-
 
         /**
          * @var \Locrian\Collections\HashMap list of options routes
          */
         private $options;
 
-
         /**
          * @var \Locrian\Collections\HashMap list of head routes
          */
         private $head;
 
-
         /**
          * @var array Request types Post, Get...
          */
-        const VALID_REQUEST_METHODS = [ "GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD" ];
-
+        const SUPPORTED_REQUEST_METHODS = [ "GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD" ];
 
         /**
          * @var Router Singleton pattern
          */
         private static $instance = null;
-
 
         /**
          * Router constructor.
@@ -83,7 +75,6 @@
             $this->head = null;
         }
 
-
         /**
          * Removes all registered routes
          */
@@ -96,7 +87,6 @@
             $this->head = null;
         }
 
-
         /**
          * @param $type
          * @param $routePattern
@@ -107,7 +97,7 @@
          * Checks the routePattern is valid in a specific request method
          */
         private function isRouteValid($type, $routePattern){
-            if( in_array(strtoupper($type), self::VALID_REQUEST_METHODS) ){
+            if( in_array(strtoupper($type), self::SUPPORTED_REQUEST_METHODS) ){
                 $type = strtolower($type);
                 if( $this->$type == null ){
                     $this->$type = new HashMap();   // Lazy initialize
@@ -128,7 +118,6 @@
             }
         }
 
-
         /**
          * @return Router Singleton pattern
          */
@@ -139,7 +128,6 @@
             return self::$instance;
         }
 
-
         /**
          * @param Route $route
          * Adds route to the list
@@ -149,7 +137,6 @@
             $method = strtolower($method);
             $this->$method->add($route->getRoutePattern(), $route);
         }
-
 
         /**
          * @param $requestMethod
@@ -177,7 +164,7 @@
          */
         public function find($requestMethod, $path){
             if( is_string($requestMethod) && is_string($path) ){
-                if( !in_array(strtoupper($requestMethod), self::VALID_REQUEST_METHODS) ){
+                if( !in_array(strtoupper($requestMethod), self::SUPPORTED_REQUEST_METHODS) ){
                     throw new RouterException("Unsupported request method");
                 }
                 $type = strtolower($requestMethod);
@@ -215,7 +202,6 @@
             }
         }
 
-
         /**
          * @param $name string name of the route
          *
@@ -224,7 +210,7 @@
          * Searches all the routes in a specific request method and returns it if it is founded. If not returns false.
          */
         public function searchByName($name){
-            foreach( self::VALID_REQUEST_METHODS as $value ){
+            foreach( self::SUPPORTED_REQUEST_METHODS as $value ){
                 $method = strtolower($value);
                 if( $this->$method == null ){
                     continue;
@@ -242,7 +228,6 @@
             return false;
         }
 
-
         /**
          * @param $requestMethod string
          * @return \Locrian\Collections\ArrayList of Route
@@ -250,7 +235,7 @@
          */
         public function getRoutes($requestMethod){
             $method = strtolower($requestMethod);
-            if( in_array(strtoupper($requestMethod), self::VALID_REQUEST_METHODS) ){
+            if( in_array(strtoupper($requestMethod), self::SUPPORTED_REQUEST_METHODS) ){
                 $list = new ArrayList();
                 $this->$method->each(function($key, Route $route) use($list){
                     $list->add($route);
@@ -261,7 +246,6 @@
                 throw new InvalidArgumentException("Unsupported request method");
             }
         }
-
 
         /**
          * @param $requestMethod
@@ -291,7 +275,6 @@
             }
         }
 
-
         /**
          * @param $routePattern
          * @param Closure $callback
@@ -304,7 +287,6 @@
         public static function get($routePattern, Closure $callback){
             self::addRouteStatic("GET", $routePattern, $callback);
         }
-
 
         /**
          * @param $routePattern
@@ -319,7 +301,6 @@
             self::addRouteStatic("POST", $routePattern, $callback);
         }
 
-
         /**
          * @param $routePattern
          * @param Closure $callback
@@ -332,7 +313,6 @@
         public static function put($routePattern, Closure $callback){
             self::addRouteStatic("PUT", $routePattern, $callback);
         }
-
 
         /**
          * @param $routePattern
@@ -347,7 +327,6 @@
             self::addRouteStatic("DELETE", $routePattern, $callback);
         }
 
-
         /**
          * @param $routePattern
          * @param Closure $callback
@@ -361,7 +340,6 @@
             self::addRouteStatic("OPTIONS", $routePattern, $callback);
         }
 
-
         /**
          * @param $routePattern
          * @param Closure $callback
@@ -374,7 +352,6 @@
         public static function head($routePattern, Closure $callback){
             self::addRouteStatic("HEAD", $routePattern, $callback);
         }
-
 
         /**
          * @param $routePattern

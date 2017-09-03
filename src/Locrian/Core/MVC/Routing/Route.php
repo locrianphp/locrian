@@ -27,13 +27,11 @@
          */
         private $name;
 
-
         /**
          * @var string
          * Route uri pattern. "/", "/about", "admin/dashboard" ...
          */
         private $routePattern;
-
 
         /**
          * @var string
@@ -44,13 +42,11 @@
          */
         private $requestMethod;
 
-
         /**
          * @var string
          * Controller class that you want to attach to the route
          */
         private $controller;
-
 
         /**
          * @var string
@@ -58,20 +54,17 @@
          */
         private $method;
 
-
         /**
          * @var array
          * Optional middleware list.
          */
         private $middlewareList;
 
-
         /**
          * @var array
          * Query and path parameters
          */
         private $pathParameters;
-
 
         /**
          * Route constructor.
@@ -89,7 +82,6 @@
                  ->setPathParameters([]);
         }
 
-
         /**
          * @return bool
          * Returns whether the route has middleware
@@ -98,14 +90,12 @@
             return count($this->middlewareList) > 0;
         }
 
-
         /**
          * @return string route name
          */
         public function getName(){
             return $this->name;
         }
-
 
         /**
          * @param mixed $name
@@ -123,14 +113,12 @@
             }
         }
 
-
         /**
          * @return mixed
          */
         public function getRequestMethod(){
             return $this->requestMethod;
         }
-
 
         /**
          * @param mixed $requestMethod
@@ -148,14 +136,12 @@
             }
         }
 
-
         /**
          * @return mixed
          */
         public function getController(){
             return $this->controller;
         }
-
 
         /**
          * @param mixed $controller
@@ -173,14 +159,12 @@
             }
         }
 
-
         /**
          * @return mixed
          */
         public function getMethod(){
             return $this->method;
         }
-
 
         /**
          * @param mixed $method
@@ -198,14 +182,12 @@
             }
         }
 
-
         /**
          * @return string
          */
         public function getRoutePattern(){
             return $this->routePattern;
         }
-
 
         /**
          * @param string $routePattern
@@ -223,7 +205,6 @@
             }
         }
 
-
         /**
          * @return mixed
          * @throws InvalidArgumentException
@@ -231,7 +212,6 @@
         public function getMiddlewareList(){
             return $this->middlewareList;
         }
-
 
         /**
          * @param mixed $middleware
@@ -244,14 +224,12 @@
             return $this;
         }
 
-
         /**
          * @return array
          */
         public function getPathParameters(){
             return $this->pathParameters;
         }
-
 
         /**
          * @param array $pathParameters
@@ -261,7 +239,6 @@
             $this->pathParameters = $pathParameters;
             return $this;
         }
-
 
         /**
          * @return Route
