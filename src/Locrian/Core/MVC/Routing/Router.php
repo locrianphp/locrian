@@ -24,6 +24,21 @@
     class Router{
 
         /**
+         * @var \Locrian\Collections\HashMap list of connect routes
+         */
+        private $connect;
+
+        /**
+         * @var \Locrian\Collections\HashMap list of patch routes
+         */
+        private $patch;
+
+        /**
+         * @var \Locrian\Collections\HashMap list of trace routes
+         */
+        private $trace;
+
+        /**
          * @var \Locrian\Collections\HashMap list of get routes
          */
         private $get;
@@ -56,7 +71,7 @@
         /**
          * @var array Request types Post, Get...
          */
-        const SUPPORTED_REQUEST_METHODS = [ "GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD" ];
+        const SUPPORTED_REQUEST_METHODS = [ "CONNECT", "PATCH", "TRACE",  "GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD" ];
 
         /**
          * @var Router Singleton pattern
@@ -67,12 +82,7 @@
          * Router constructor.
          */
         private function __construct(){
-            $this->get = null;
-            $this->post = null;
-            $this->put = null;
-            $this->delete = null;
-            $this->options = null;
-            $this->head = null;
+            $this->clearRoutes();
         }
 
         /**
@@ -85,6 +95,9 @@
             $this->delete = null;
             $this->options = null;
             $this->head = null;
+            $this->trace = null;
+            $this->patch = null;
+            $this->connect = null;
         }
 
         /**
@@ -282,6 +295,45 @@
          * @throws InvalidArgumentException
          * @throws RouterException
          *
+         * Route for patch request
+         */
+        public static function patch($routePattern, Closure $callback){
+            self::addRouteStatic("PATCH", $routePattern, $callback);
+        }
+
+        /**
+         * @param $routePattern
+         * @param Closure $callback
+         *
+         * @throws InvalidArgumentException
+         * @throws RouterException
+         *
+         * Route for trace request
+         */
+        public static function trace($routePattern, Closure $callback){
+            self::addRouteStatic("TRACE", $routePattern, $callback);
+        }
+
+        /**
+         * @param $routePattern
+         * @param Closure $callback
+         *
+         * @throws InvalidArgumentException
+         * @throws RouterException
+         *
+         * Route for connect request
+         */
+        public static function connect($routePattern, Closure $callback){
+            self::addRouteStatic("CONNECT", $routePattern, $callback);
+        }
+
+        /**
+         * @param $routePattern
+         * @param Closure $callback
+         *
+         * @throws InvalidArgumentException
+         * @throws RouterException
+         *
          * Route for get request
          */
         public static function get($routePattern, Closure $callback){
@@ -360,7 +412,17 @@
          * Matches all the http methods
          */
         public static function any($routePattern, Closure $callback){
-            $methods = ["GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"];
+            $methods = [
+                'CONNECT',
+                'DELETE',
+                'GET',
+                'HEAD',
+                'OPTIONS',
+                'PATCH',
+                'POST',
+                'PUT',
+                'TRACE',
+            ];
             foreach( $methods as $method ){
                 self::addRouteStatic($method, $routePattern, $callback);
             }
