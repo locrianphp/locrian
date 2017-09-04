@@ -1,11 +1,20 @@
 <?php
+
     /**
-     * Created by PhpStorm.
-     * User: social13
-     * Date: 02.09.2017
-     * Time: 17:26
+     * * * * * * * * * * * * * * * * * * * *
+     *        Locrian Framework            *
+     * * * * * * * * * * * * * * * * * * * *
+     *                                     *
+     * Author  : Özgür Senekci             *
+     *                                     *
+     * Skype   :  socialinf                *
+     *                                     *
+     * License : The MIT License (MIT)     *
+     *                                     *
+     * * * * * * * * * * * * * * * * * * * *
      */
 
+    namespace Locrian\Core\Providers;
 
     use Locrian\Bus\EventBus;
     use Locrian\Conf\Conf;
