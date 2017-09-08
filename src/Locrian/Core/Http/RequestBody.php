@@ -79,7 +79,7 @@
          * @return mixed
          * Returns a parameter's value from parsed body
          */
-        public function getParam($name, $default){
+        public function getParam($name, $default = null){
             $param = $default;
             $parsedBody = $this->getParsedBody();
             if( $parsedBody !== null ){
