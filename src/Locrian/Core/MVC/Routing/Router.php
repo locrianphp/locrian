@@ -155,7 +155,7 @@
          * @param $requestMethod
          * @param $path
          *
-         * @return bool
+         * @return \Locrian\Core\MVC\Routing\Route|null
          * @throws InvalidArgumentException
          * @throws RouterException
          *
