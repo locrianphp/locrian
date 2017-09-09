@@ -250,9 +250,11 @@
             $method = strtolower($requestMethod);
             if( in_array(strtoupper($requestMethod), self::SUPPORTED_REQUEST_METHODS) ){
                 $list = new ArrayList();
-                $this->$method->each(function($key, Route $route) use($list){
-                    $list->add($route);
-                });
+                if( $this->$method !== null ){
+                    $this->$method->each(function($key, Route $route) use ($list){
+                        $list->add($route);
+                    });
+                }
                 return $list;
             }
             else{
