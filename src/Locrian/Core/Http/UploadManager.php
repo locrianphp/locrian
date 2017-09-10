@@ -105,7 +105,7 @@
          */
         public function isAllUploaded(){
             $err = false;
-            $this->files->each(function(UploadedFile $file) use (&$err){
+            $this->files->each(function($i, UploadedFile $file) use (&$err){
                 if( $file->getError() > 0 ){
                     $err = true;
                 }
@@ -117,6 +117,7 @@
          * @param string $destination destination directory
          */
         public function moveAll($destination){
+            $destination = rtrim($destination, "/") . "/";
             $this->files->each(function($i, UploadedFile $file) use($destination){
                 if( $file->getError() === 0 && count($file->getErrorMessages()) === 0 ){
                     $d = new File($destination . $file->getName());
@@ -223,12 +224,19 @@
         }
 
         /**
+         * Clears all validation errors
+         */
+        public function clearValidationErrors(){
+            $this->validationErrors = [];
+        }
+
+        /**
          * @return array
          * Returns upload error codes which are represented by constants
          */
         public function getUploadErrors(){
             $errors = [];
-            $this->files->each(function(UploadedFile $file) use(&$errors){
+            $this->files->each(function($i, UploadedFile $file) use(&$errors){
                 if( $file->getError() > 0 ){
                     $errors[] = $file->getError();
                 }
