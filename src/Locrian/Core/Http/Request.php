@@ -450,8 +450,23 @@
          * For more information: https://developer.mozilla.org/en-US/docs/Glossary/Quality_values
          */
         private function sortByPriority($arr){
-            arsort($arr);
-            return array_keys($arr);
+            $sorted = [];
+            $used = [];
+            foreach( $arr as $key => $value ){
+                $biggest = 0;
+                $targetKey = -1;
+                foreach( $arr as $k => $v ){
+                    if( !isset($used[$k]) && $v > $biggest ){
+                        $targetKey = $k;
+                        $biggest = $v;
+                    }
+                }
+                if( $targetKey !== -1 ){
+                    $used[$targetKey] = true;
+                    $sorted[] = $targetKey;
+                }
+            }
+            return $sorted;
         }
 
         /**
