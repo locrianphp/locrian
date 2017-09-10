@@ -110,7 +110,7 @@
         }
 
         private static function createUri(HashMap $env){
-            $scheme = (($env->get("HTTPS") !== false && $env->get('HTTPS') !== "off") ? "https" : "http");
+            $scheme = (($env->get("HTTPS") !== null && $env->get('HTTPS') !== "off") ? "https" : "http");
             $username = $env->get('PHP_AUTH_USER') ?: "";
             $password = $env->get('PHP_AUTH_PW') ?: "";
 
@@ -129,7 +129,7 @@
             }
             $urlParts = parse_url($_SERVER['REQUEST_URI']);
 
-            $path = isset($urlParts['path']) ? rtrim($urlParts['path'], '/') : "";
+            $path = isset($urlParts['path']) ? $urlParts['path'] : "";
             $query = isset($urlParts['query']) ? $urlParts['query'] : "";
 
             $uri = new Uri();

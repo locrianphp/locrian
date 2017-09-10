@@ -435,7 +435,7 @@
                         $result[trim($withQuality[0])] = floatval(trim(StringUtils::remove("q=", $withQuality[1])));
                     }
                     else{
-                        $result[$withQuality[0]] = 1;
+                        $result[trim($withQuality[0])] = 1;
                     }
                 }
                 $list = $this->sortByPriority($result);
@@ -459,9 +459,9 @@
          * Returns true if client is on mobile
          */
         public function isClientMobile(){
-            if( $this->headers->has('HTTP_USER_AGENT') ){
-                $userAgent = $this->headers->get('HTTP_USER_AGENT');
-                return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\\.browser|up\\.link|webos|wos)/iu", $userAgent);
+            if( $this->headers->has('User-Agent') ){
+                $userAgent = $this->headers->get('User-Agent');
+                return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\\.browser|up\\.link|webos|wos)/iu", $userAgent) !== 0;
             }
             else{
                 return false;
@@ -473,9 +473,9 @@
          * Detects whether client is bot
          */
         public function isClientBot(){
-            if( $this->headers->has('HTTP_USER_AGENT') ){
-                $userAgent = $this->headers->get('HTTP_USER_AGENT');
-                return preg_match('/bot|crawl|slurp|spider|google|yahoo/i', $userAgent);
+            if( $this->headers->has('User-Agent') ){
+                $userAgent = $this->headers->get('User-Agent');
+                return preg_match('/bot|crawl|slurp|spider|google|yahoo/i', $userAgent) !== 0;
             }
             else{
                 // Normal browser connections send user agent header
@@ -561,8 +561,8 @@
          * Detects whether the request is an Ajax request
          */
         public function isXhr(){
-            return ($this->environment->has("HTTP_X_REQUESTED_WITH") &&
-                strtolower($this->environment->get("HTTP_X_REQUESTED_WITH")) === "xmlhttprequest");
+            return ($this->headers->has("X-Requested-With") &&
+                strtolower($this->headers->get("X-Requested-With")) === "xmlhttprequest");
         }
 
         /**
@@ -570,8 +570,8 @@
          * Detects whether the connection is persistent or non-persistent
          */
         public function isConnectionPersistent(){
-            if( $this->headers->has("HTTP_CONNECTION") ){
-                return $this->headers->get("HTTP_CONNECTION") === "keep-alive";
+            if( $this->headers->has("Connection") ){
+                return $this->headers->get("Connection") === "keep-alive";
             }
             else{
                 return false;
