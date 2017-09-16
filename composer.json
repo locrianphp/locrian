@@ -16,7 +16,7 @@
     "php": ">=5.6",
     "ext-mbstring": "*",
     "ext-mcrypt": "*",
-    "locrianphp/locrian-libs": "1.0.0"
+    "locrianphp/locrian-libs": "1.0.1"
   },
   "require-dev": {
     "phpunit/phpunit": "~5.7"
