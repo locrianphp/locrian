@@ -65,16 +65,22 @@
          * @param $bufferSize integer
          * @param $protocolVersion string
          * @param $statusCode integer
+         * @param \Locrian\IO\BufferedOutputStream|null $outputStream
          */
-        public function __construct($bufferSize, $protocolVersion, $statusCode = 200){
+        public function __construct($bufferSize, $protocolVersion, BufferedOutputStream $outputStream = null, $statusCode = 200){
             if( $bufferSize <= 0 ){
                 $bufferSize = 1; // Minimum buffer size
-                $this->outputBuffer = false;
-            }
-            else{
                 $this->outputBuffer = true;
             }
-            $this->outputStream = new BufferedOutputStream(new File("php://output"), $bufferSize);
+            else{
+                $this->outputBuffer = false;
+            }
+            if( $outputStream === null ){
+                $this->outputStream = new BufferedOutputStream(new File("php://output"), $bufferSize);
+            }
+            else{
+                $this->outputStream = $outputStream;
+            }
             $this->protocolVersion = $protocolVersion;
             $this->statusCode = $statusCode;
             $this->headers = new HashMap();
@@ -296,7 +302,7 @@
         private function processResponse($data){
             if( is_string($data) || is_numeric($data) ){
                 $this->writeHead("Content-Type", "text/html;charset=utf-8");
-                $this->write($data, true);
+                $this->write($data);
             }
             else if( $data instanceof File ){
                 if( $data->exists() && $data->isFile() ){
@@ -329,7 +335,7 @@
                 foreach( $headers as $key => $value ){
                     $this->writeHead($key, $value);
                 }
-                $this->write($data->getContent(), true);
+                $this->write($data->getContent());
             }
             else{
                 throw new InvalidArgumentException("Response body can only be string, File object or ResponseBuilder object");
